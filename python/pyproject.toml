@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "scurry"
+version = "0.0.1"
+description = ""
+authors = ["Seth Curry <seth@scurry.io>"]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+structlog = "^20.2.0"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry>=0.12"]
+build-backend = "poetry.masonry.api"

@@ -1,0 +1,48 @@
+# https://taskfile.dev
+
+version: "2"
+
+dotenv: [".env"]
+
+vars:
+  GREETING: Hello, World!
+
+tasks:
+  default:
+    cmds:
+      - echo "{{.GREETING}}"
+    silent: true
+  lint:
+    cmds:
+      - cmd: poetry run pylama ./scurry
+        ignore_error: true
+      - cmd: poetry run mypy ./scurry
+        ignore_error: true
+    sources:
+      - ./scurry/**/*
+  test:
+    cmds:
+      - poetry run pytest -v ./scurry
+    sources:
+      - ./scurry/**/*
+  dev:
+    cmds:
+      - cd deploy/dev && docker-compose up -d
+  worker:
+    cmds:
+      - poetry run celery -A scurry.muninn.worker worker --loglevel=INFO
+  server:
+    cmds:
+      - poetry run uvicorn scurry.muninn.server:app
+  scheduler:
+    cmds:
+      - poetry run python ./scurry/muninn/bin/scheduler.py
+  initdb:
+    cmds:
+      - ./scripts/init_data.sh
+  db-revision:
+    cmds:
+      - poetry run alembic revision --autogenerate -m "snapshot"
+  coverage:
+    cmds:
+      - poetry run coverage run -m pytest ./scurry
