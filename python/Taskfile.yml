@@ -1,11 +1,15 @@
 # https://taskfile.dev
 
-version: "2"
+version: "3"
 
 dotenv: [".env"]
 
 vars:
-  GREETING: Hello, World!
+  cwd:
+    sh: pwd
+
+env:
+  PYTHONPATH: "{{ .cwd }}"
 
 tasks:
   default:
@@ -46,3 +50,6 @@ tasks:
   coverage:
     cmds:
       - poetry run coverage run -m pytest ./scurry
+  docs:
+    cmds:
+      - poetry run pdoc -o ./dist/docs ./scurry

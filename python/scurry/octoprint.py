@@ -25,6 +25,7 @@ class Job:
     Attributes:
         estimatedPrintTime (int): The estimated seconds until the print is done
     """
+
     file: File
     estimatedPrintTime: int
 

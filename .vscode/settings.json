@@ -1,0 +1,11 @@
+{
+    "terminal.integrated.env.windows": {
+        "PYTHONPATH": "python"
+    },
+    "python.linting.pylamaEnabled": true,
+    "python.testing.pytestEnabled": true,
+    "python.pythonPath": "python\\.venv\\Scripts\\python.exe",
+    "python.formatting.provider": "black",
+    "python.linting.mypyEnabled": true,
+    "python.linting.pylintEnabled": false
+}
