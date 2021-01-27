@@ -1,10 +1,16 @@
-from scurry.structio.field import Field
-from scurry.structio.value import String
+from scurry.structio import Integer, String, ValidationError
 
 
-def test_parse():
-    my_field = Field(String())
+def test_validate():
+    def validator(in_str: str):
+        if in_str != "my_test":
+            raise ValidationError
 
-    my_field.parse("my_string")
+    my_field = String(validator=validator)
 
-    assert my_field.value() == "my_string"
+    my_field.parse("not_my_test")
+    try:
+        my_field.validate()
+        raise TypeError("validation should have failed")
+    except ValidationError:
+        pass

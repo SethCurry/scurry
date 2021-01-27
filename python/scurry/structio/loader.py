@@ -23,7 +23,7 @@ class Loader:
 
     def __iter__(self):
         for prop, val in vars(self):
-            if isinstance(val, Field):
+            if isinstance(val, Value):
                 yield (prop, val)
 
     def __get_field(self, name: str) -> Field:

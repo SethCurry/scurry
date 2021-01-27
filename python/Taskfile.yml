@@ -50,6 +50,7 @@ tasks:
   coverage:
     cmds:
       - poetry run coverage run -m pytest ./scurry
+      - poetry run coverage report
   docs:
     cmds:
       - poetry run pdoc -o ./dist/docs ./scurry

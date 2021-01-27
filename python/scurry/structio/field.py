@@ -1,52 +1,74 @@
-"""field stores all the Field objects."""
+"""value contains all of the Value fields for structio"""
 
+import abc
 import typing
-from scurry.structio.value import Value
 
 FieldType = typing.TypeVar("FieldType")
-FieldValidateType = typing.Callable[[FieldType], None]
+ValidatorType = typing.Callable[[FieldType], None]
 
 
-class Field(typing.Generic[FieldType]):
-    """Field a single field within a `Loader`."""
+class ValidationError(Exception):
+    """Base validation exception class."""
+
+    pass
+
+
+class Field(abc.ABC, typing.Generic[FieldType]):
+    """Field is a generic field value."""
+
+    value = None  # type: typing.Optional[FieldType]
+    """The value.  It's type is generic"""
 
     def __init__(
         self,
-        value_type: Value[FieldType],
-        validator: typing.Optional[FieldValidateType] = None,
+        default: typing.Optional[FieldType] = None,
+        validator: ValidatorType = None,
     ):
-        """
-        Create a new Field.
-
-        ---
-        **Arguments:**
-        * value_type (Value): The `Value` to use to parse and validate.
-
-        ---
-        **Keywords**:
-        * validator (FieldValidateType): The function to use to validate parsed values.
-
-        """
+        self.value = default
         self.validator = validator
-        self.value_type = value_type
+
+    @abc.abstractmethod
+    def parse(self, value: typing.Any):
+        """Parse the provided value, throwing exceptions if it is invalid."""
+        return
+
+    def validate(self):
+        """Validate the current value."""
+        if self.validator is not None:
+            self.validator(self.value)
+
+
+class String(Field[str]):
+    """String is a `Field` containing  a string."""
 
     def parse(self, value: typing.Any):
         """
-        Parse a value using the contained field.
+        Parse the provided value if possible.
 
         ---
-        **Arguments**:
+        **Arguments:**
         * value (typing.Any): The value to be parsed.
 
         """
-        self.value_type.parse(value)
+        if type(value) != str:
+            raise ValueError("value must be a string")
 
-    def value(self) -> typing.Optional[FieldType]:
-        """Get the value of the contained `Value`."""
-        return self.value_type.value
+        self.value = value
 
-    def validate(self):
-        """Call the `validator` function if one was supplied."""
-        if self.validator is not None:
-            self.validator(self.value_type.value())
-        return
+
+class Integer(Field[int]):
+    """Integer is a `Field` containing strings."""
+
+    def parse(self, value: typing.Any):
+        """
+        Parse the provided value if possible.
+
+        ---
+        **Arguments:**
+        * value (typing.Any): The value to be parsed.
+
+        """
+        if type(value) != int:
+            raise ValueError("value must be an int")
+
+        self.value = value
