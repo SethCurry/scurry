@@ -54,3 +54,6 @@ tasks:
   docs:
     cmds:
       - poetry run pdoc -o ./dist/docs ./scurry
+  todo:
+    cmds:
+      - rg TODO
