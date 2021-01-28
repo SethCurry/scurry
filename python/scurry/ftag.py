@@ -1,18 +1,42 @@
+"""Manage tags in file names."""
+
 import typing
-from dataclasses import dataclass
 
 
 class Attributes:
+    """
+    A collection of attributes for a file.
+
+    ---
+    **Properties:**
+    * tags (typing.List[str]): The tags that are on the file.
+    * fields (typing.Dict[str,str]): The key-value fields on the file.
+
+    """
+
     def __init__(self):
+        """Create a new `Attributes` object."""
         self.tags: typing.List[str] = []
         self.fields: typing.Dict[str, str] = {}
 
     def has(self, name: str) -> bool:
+        """
+        Determine whether the given name exists as a tag or field on this file.
+
+        ---
+        **Arguments**:
+        * name (str): The name of the tag or field
+
+        ---
+        **Returns:** bool indicating whether the name exists as a tag or field
+
+        """
         if name in self.tags or name in self.fields:
             return True
         return False
 
     def __str__(self) -> str:
+        """Convert these Attributes back into a string to use in a file name."""
         if len(self.tags) == 0 and len(self.fields) == 0:
             return ""
 
@@ -27,6 +51,14 @@ class Attributes:
 
 
 def parse_filename(name: str) -> Attributes:
+    """
+    Parse the tags and attributes from the provided file name.
+
+    ---
+    **Arguments:**
+    * name (str): The name of the file, can be either an absolute path or just the file name.
+    """
+
     ret = Attributes()
     in_tag = False
     is_field = False
@@ -71,4 +103,6 @@ def parse_filename(name: str) -> Attributes:
 
 
 def walk(root: str) -> typing.Dict[str, Attributes]:
-    return
+    # TODO implement the walk function
+    # TODO change this to a generator
+    return {}

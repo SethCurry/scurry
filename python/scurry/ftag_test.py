@@ -1,3 +1,5 @@
+"""Test the scurry.ftag module."""
+
 from scurry.ftag import parse_filename
 
 
